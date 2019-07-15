@@ -27,7 +27,7 @@ class Vulcan:
     def __init__(self, name: str):
         self.name = name
         self.model = genanki.Model(gen_id(),
-                                   '新编日语（上海外语教育出版社）',
+                                   '新编日语（上海外语教育出版社）第一册',
                                    fields=[
                                        {'name': 'Question'},
                                        {'name': 'Answer1'},
@@ -50,7 +50,7 @@ class Vulcan:
                                                  <span class="large">{{Answer1}}</span>
                                                  <span class="large">{{Answer2}}</span>
                                                  <hr/>
-                                                 {{Tone}},{{Attr}},{{Lesson}}
+                                                 声调：{{Tone}}, 词性：{{Attr}}, 课文：{{Lesson}}
                                                  <br/>
                                                  </span>
                                             </div>
@@ -64,20 +64,14 @@ class Vulcan:
     def add(self, word: Word):
         node1 = genanki.Note(model=self.model,
                             fields=[
-                                word.word, word.chinese, word.gana,
-                                word.tone, word.attr, word.lesson,
+                                word.to_word(), word.to_gana(), word.to_chinese(),
+                                word.tone, word.attr, word.clean_lesson(),
                             ])
         self.deck.add_note(node1)
-        node2 = genanki.Note(model=self.model,
-                            fields=[
-                                word.chinese, word.gana, word.word,
-                                word.tone, word.attr, word.lesson
-                            ])
-        self.deck.add_note(node2)
         node3 = genanki.Note(model=self.model,
                             fields=[
-                                word.gana, word.word, word.chinese,
-                                word.tone, word.attr, word.lesson,
+                                word.to_gana(), word.to_word(), word.to_chinese(),
+                                word.tone, word.attr, word.clean_lesson(),
                             ])
         self.deck.add_note(node3)
 
